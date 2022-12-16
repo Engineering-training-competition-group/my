@@ -38,6 +38,10 @@ roslaunch fast_lio mapping_avia.launch
 roslaunch px4_realsence_bridge bridge.launch
 ```
 
+
+
+
+
 ## 安装
 
 ###  imu内参
@@ -71,6 +75,8 @@ catkin_make
 
 使用官方的标定包
 
+
+
 ## 调参
 
 ### imu内参
@@ -87,6 +93,84 @@ rosbag record -O imu_bagname /mavros/imu/data_raw
 
 #TODO
 
+
+
+## QGC相关参数更改
+
+`dshort_config` 调整电机
+
+`CBRK_USB_CHK` 为了让插了USB之后还可以解锁
+
+`CBRK_IO_SAFETY` 跳过安全开关
+
+`SYS_TEL1_BAUD`改串口波特率
+
+![](C:\Users\31919\Desktop\QQ图片20221216183141.jpg)
+
+
+
+## 怎么调电机顺序
+
+## QGC确定电机顺序,和顺逆时针
+
+![](img/444.jpg)
+
+白色是地线，下面是信号线，插好后是蓝色
+
+电机顺序如果反了，就调信号线
+
+![](img/333.jpg)
+
+*顺逆时针反了就在QGC中输命令*
+
+命令1是调顺逆时针，1可替换未2 3 4
+
+命令二是保存
+
+![](img/222.jpg)
+
+![](img/111.jpg)
+
+
+
+## CLASH FOR WINDOWS 如何在Linux上使用
+
+### # 1. 安装clash for windows
+
+点开链接,选择clash for windows的linux版本
+
+[clash]: https://github.com/Fndroid/clash_for_windows_pkg/releases/tag/0.17.
+
+![](img/QQ图片20221216185120.jpg)
+
+### 打开clash
+
+![](img/QQ图片20221216185124.jpg)
+
+`cd clash`
+
+`./cfw`
+
+设置clah
+
+![](../../25895336-9667850b01c82b6c.webp)
+
+### 修改配置文件
+
+`sudo chmod 666 /etc/environment`
+
+`sodo gedit /etc/environment`
+
+### 添加以下内容并保存
+
+    `http_proxy=http://127.0.0.1:7890/ https_proxy=http://127.0.0.1:7890/ ftp_proxy=http://127.0.0.1:7890/ HTTP_PROXY=http://127.0.0.1:7890/ HTTPS_PROXY=http://127.0.0.1:7890/ FTP_PROXY=http://127.0.0.1:7890/`
+
+### 保存
+
+`sudo chmod 444 /etc/environment`
+
+
+
 ## 修改及原因
 
 ## 当前问题
@@ -101,20 +185,18 @@ rosbag record -O imu_bagname /mavros/imu/data_raw
 
 PositionTargetGlobal failed because no origin
 
-![](C:\Users\31919\Desktop\97e2819a442b4a0eab68ec156f99983.jpg)
+#### **解决办法**
 
-`未解决`
+要在QGC里EKF2MASK里GPS相关参数关掉
+
+
 
 #### 降落时会直接断电摔下
 
 手飞时会突然断电摔下，自动飞时调到land模式会直接摔下
 
-![](C:\Users\31919\Desktop\21ae85ee3be1f1ca41b53c594284908.jpg)
-
-![](C:\Users\31919\Desktop\277ed1547a81aa4ab8e8964f1e94320.jpg)
-
-![](C:\Users\31919\Desktop\374084be271cd2244e3524cec6183bb.jpg)
-
 上图可见油门值和电机的输出值，在一瞬间突然掉零。该问题导致一电机烧毁，解决办法需要和电机的商家沟通
 
-#### 
+#### 原因分析
+
+无人机动力系统问题
